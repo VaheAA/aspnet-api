@@ -1,0 +1,43 @@
+using Microsoft.EntityFrameworkCore;
+using rest.Models;
+
+namespace rest.Data;
+
+public static class DataExtensions
+{
+    public static void MigrateDb(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var dbCOntext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+        dbCOntext.Database.Migrate();
+    }
+
+    public static void AddGameStoreDb(this WebApplicationBuilder builder)
+    {
+        var connString = builder.Configuration.GetConnectionString("GameStore");
+        builder.Services.AddScoped<GameStoreContext>();
+
+        builder.Services.AddSqlite<GameStoreContext>(
+            connString,
+            optionsAction: options =>
+                options.UseSeeding(
+                    (context, _) =>
+                    {
+                        if (!context.Set<Genre>().Any())
+                        {
+                            context
+                                .Set<Genre>()
+                                .AddRange(
+                                    new Genre { Name = "Fighting" },
+                                    new Genre { Name = "Action" },
+                                    new Genre { Name = "Adventure" },
+                                    new Genre { Name = "RPG" }
+                                );
+
+                            context.SaveChanges();
+                        }
+                    }
+                )
+        );
+    }
+}
