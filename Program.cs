@@ -1,14 +1,20 @@
-using Microsoft.EntityFrameworkCore;
 using rest.Data;
 using rest.Endpoints;
-using rest.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddValidation();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 builder.AddGameStoreDb();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapGamesEndpoints();
 app.MapGenresEndpoints();
