@@ -9,7 +9,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.10" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="rest.Tests" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="rest.Tests/**" />
+    <Content Remove="rest.Tests/**" />
+    <EmbeddedResource Remove="rest.Tests/**" />
+    <None Remove="rest.Tests/**" />
   </ItemGroup>
 </Project>
