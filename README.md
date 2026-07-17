@@ -1,6 +1,8 @@
 # GameStore.Api
 
 > **Learning project.** This is a small ASP.NET Core minimal API built to practice modern C#/.NET 10 patterns — minimal APIs, EF Core with SQLite, xUnit integration testing, and Docker. It's not intended for production use.
+>
+> Based on the [ASP.NET Core Full Course For Beginners (.NET 10)](https://www.youtube.com/watch?v=YbRe4iIVYJk&list=PLdLcewOZX20SlVudzCzU5xyzwag2umsrF&index=71&t=12320s) tutorial by Julio Casal.
 
 A minimal REST API for managing a catalog of games and their genres.
 
