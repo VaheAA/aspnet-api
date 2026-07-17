@@ -9,13 +9,6 @@ public static class GamesEndpoints
 {
     private const string GetGameEndpoint = "GetGame";
 
-    private static readonly List<GameDto> games =
-    [
-        new GameDto(1, "Street Fighter", "Fighting", 10.99M, DateOnly.FromDateTime(DateTime.Now)),
-        new GameDto(2, "Syphon Filter", "Action", 15.99M, DateOnly.FromDateTime(DateTime.Now)),
-        new GameDto(3, "Gran Turismo", "Racing", 39.99M, DateOnly.FromDateTime(DateTime.Now)),
-    ];
-
     public static void MapGamesEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/games");
@@ -25,7 +18,14 @@ public static class GamesEndpoints
             async (GameStoreContext dbContext) =>
                 await dbContext
                     .Games.Include(g => g.Genre)
-                    .Select(g => new GameDto(g.Id, g.Name, g.Genre!.Name, g.Price, g.ReleaseDate))
+                    .Select(g => new GameSummaryDto(
+                        g.Id,
+                        g.Name,
+                        g.Genre!.Name,
+                        g.Price,
+                        g.ReleaseDate
+                    ))
+                    .AsNoTracking()
                     .ToListAsync()
         );
 
@@ -80,22 +80,21 @@ public static class GamesEndpoints
 
         group.MapPut(
             "/{id}",
-            (int id, UpdateGameDto updatedGame) =>
+            async (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
             {
-                var index = games.FindIndex(g => g.Id == id);
+                var existingGame = await dbContext.Games.FindAsync(id);
 
-                if (index == -1)
+                if (existingGame is null)
                 {
                     return Results.NotFound();
                 }
 
-                games[index] = new GameDto(
-                    id,
-                    updatedGame.Name,
-                    updatedGame.Genre,
-                    updatedGame.Price,
-                    updatedGame.ReleaseDate
-                );
+                existingGame.Name = updatedGame.Name;
+                existingGame.GenreId = updatedGame.GenreId;
+                existingGame.Price = updatedGame.Price;
+                existingGame.ReleaseDate = updatedGame.ReleaseDate;
+
+                await dbContext.SaveChangesAsync();
 
                 return Results.NoContent();
             }
@@ -103,9 +102,17 @@ public static class GamesEndpoints
 
         group.MapDelete(
             "/{id}",
-            (int id) =>
+            async (int id, GameStoreContext dbContext) =>
             {
-                games.RemoveAll(g => g.Id == id);
+                var game = await dbContext.Games.FindAsync(id);
+
+                if (game == null)
+                {
+                    return Results.NotFound();
+                }
+
+                dbContext.Games.Remove(game);
+                await dbContext.SaveChangesAsync();
 
                 return Results.NoContent();
             }
