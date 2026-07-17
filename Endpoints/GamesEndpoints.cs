@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using rest.Data;
-using rest.Dtos;
-using rest.Models;
+using GameStore.Api.Data;
+using GameStore.Api.Dtos;
+using GameStore.Api.Models;
 
-namespace rest.Endpoints;
+namespace GameStore.Api.Endpoints;
 
 public static class GamesEndpoints
 {

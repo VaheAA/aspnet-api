@@ -1,8 +1,8 @@
 using System.Net;
 using System.Net.Http.Json;
-using rest.Dtos;
+using GameStore.Api.Dtos;
 
-namespace rest.Tests;
+namespace GameStore.Api.Tests;
 
 public class GamesEndpointsTests(GamesApiFactory factory) : IClassFixture<GamesApiFactory>
 {

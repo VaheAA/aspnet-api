@@ -1,15 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using rest.Models;
+using GameStore.Api.Models;
 
-namespace rest.Data;
+namespace GameStore.Api.Data;
 
 public static class DataExtensions
 {
     public static void MigrateDb(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
-        var dbCOntext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
-        dbCOntext.Database.Migrate();
+        var dbContext = scope.ServiceProvider.GetRequiredService<GameStoreContext>();
+        dbContext.Database.Migrate();
     }
 
     public static void AddGameStoreDb(this WebApplicationBuilder builder)

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using rest.Models;
+using GameStore.Api.Models;
 
-namespace rest.Data;
+namespace GameStore.Api.Data;
 
 public class GameStoreContext(DbContextOptions<GameStoreContext> options) : DbContext(options)
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace rest.Tests;
+namespace GameStore.Api.Tests;
 
 public class GamesApiFactory : WebApplicationFactory<Program>
 {

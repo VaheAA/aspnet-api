@@ -3,7 +3,7 @@ using System;
 
 #nullable disable
 
-namespace rest.Data.Migrations
+namespace GameStore.Api.Data.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration

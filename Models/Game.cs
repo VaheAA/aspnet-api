@@ -1,4 +1,4 @@
-namespace rest.Models;
+namespace GameStore.Api.Models;
 
 public class Game
 {

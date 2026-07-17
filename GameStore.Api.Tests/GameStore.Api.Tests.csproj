@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\rest.csproj" />
+    <ProjectReference Include="..\GameStore.Api.csproj" />
   </ItemGroup>
 
 </Project>
