@@ -1,0 +1,11 @@
+bin/
+obj/
+GameStore.Api.Tests/
+*.db
+.git/
+.gitignore
+.editorconfig
+.idea/
+.zed/
+Dockerfile
+.dockerignore
