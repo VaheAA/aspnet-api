@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using rest.Data;
 using rest.Dtos;
 using rest.Models;
@@ -19,15 +20,33 @@ public static class GamesEndpoints
     {
         var group = app.MapGroup("/games");
 
-        group.MapGet("/", () => games);
+        group.MapGet(
+            "/",
+            async (GameStoreContext dbContext) =>
+                await dbContext
+                    .Games.Include(g => g.Genre)
+                    .Select(g => new GameDto(g.Id, g.Name, g.Genre!.Name, g.Price, g.ReleaseDate))
+                    .ToListAsync()
+        );
 
         group
             .MapGet(
                 "/{id}",
-                (int id) =>
+                async (int id, GameStoreContext dbContext) =>
                 {
-                    var game = games.FirstOrDefault(g => g.Id == id);
-                    return game is null ? Results.NotFound() : Results.Ok(game);
+                    var game = await dbContext.Games.FindAsync(id);
+
+                    return game is null
+                        ? Results.NotFound()
+                        : Results.Ok(
+                            new GameDetailsDto(
+                                game.Id,
+                                game.Name,
+                                game.GenreId,
+                                game.Price,
+                                game.ReleaseDate
+                            )
+                        );
                 }
             )
             .WithName(GetGameEndpoint);
