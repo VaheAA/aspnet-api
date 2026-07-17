@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__GameStore=Data Source=/app/data/GameStore.db
+    volumes:
+      - gamestore-data:/app/data
+
+volumes:
+  gamestore-data:
