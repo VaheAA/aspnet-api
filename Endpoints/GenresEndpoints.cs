@@ -1,5 +1,6 @@
 using GameStore.Api.Data;
 using GameStore.Api.Dtos;
+using GameStore.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Endpoints;
@@ -21,9 +22,10 @@ public static class GenresEndpoints
 
         group.MapPost(
             "/",
-            async (GenreDto genreDto, GameStoreContext dbContext) =>
+            async (CreateGenreDto genreDto, GameStoreContext dbContext) =>
             {
                 Genre genre = new() { Name = genreDto.Name };
+
                 dbContext.Genres.Add(genre);
                 await dbContext.SaveChangesAsync();
 
